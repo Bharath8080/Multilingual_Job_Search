@@ -4,3 +4,4 @@ langchain-openai
 google-search-results
 serpapi
 openai
+langchain
