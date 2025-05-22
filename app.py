@@ -223,6 +223,38 @@ def translate_jobs(jobs, target_language, api_key):
         st.error(f"Translation error: {str(e)}")
         return jobs
 
+# Function to translate search query to English using Sutra LLM
+def translate_query_to_english(query, api_key):
+    try:
+        # Get base model (non-streaming) for translation
+        model = get_base_chat_model(api_key)
+        
+        system_message = """
+        You are a professional translator. Translate the following search query to English.
+        
+        Translation Rules:
+        1. Keep the translation concise and clear
+        2. Maintain the search intent
+        3. Preserve any proper nouns (names, places)
+        4. Keep any numbers, dates, and measurements
+        5. Ensure the translation is natural and search-friendly
+        
+        Return ONLY the translated query without any explanations or additional text.
+        """
+        
+        messages = [
+            HumanMessage(content=f"{system_message}\n\nQuery to translate:\n{query}")
+        ]
+        
+        response = model.invoke(messages)
+        translated_query = response.content.strip()
+        
+        return translated_query
+        
+    except Exception as e:
+        st.warning(f"Error translating query: {str(e)}. Using original query.")
+        return query
+
 # Initialize session state variables
 if "serp_api_key" not in st.session_state:
     st.session_state.serp_api_key = ""
@@ -284,7 +316,7 @@ with st.sidebar:
 
 # Main content area
 st.markdown(
-    f'<h1><img src="https://framerusercontent.com/images/9vH8BcjXKRcC5OrSfkohhSyDgX0.png" width="60" style="vertical-align: middle;"/> Multilingual Job Search <img src="https://pixcap.com/cdn/library/templates/0bb47b92-ac86-457c-99c6-e05a7c0cf4e3/thumbnail/f7ff3dee-c635-43aa-82bf-596fae43744f_transparent_null_400.webp" width="90" height="90" style="vertical-align: middle;"/></h1>',
+    f'<h1><img src="https://framerusercontent.com/images/9vH8BcjXKRcC5OrSfkohhSyDgX0.png" width="60" style="vertical-align: middle;"/> Multilingual Job Search<img src="https://pixcap.com/cdn/library/templates/0bb47b92-ac86-457c-99c6-e05a7c0cf4e3/thumbnail/f7ff3dee-c635-43aa-82bf-596fae43744f_transparent_null_400.webp" width="90" height="90" style="vertical-align: middle;"/></h1>',
     unsafe_allow_html=True
 )
 
@@ -302,11 +334,19 @@ if search_button or (not st.session_state.jobs_data and st.session_state.serp_ap
     else:
         st.session_state.search_query = search_query
         
+        # Translate query to English if needed
+        if selected_language != "English" and st.session_state.sutra_api_key:
+            with st.spinner("Translating search query to English..."):
+                english_query = translate_query_to_english(search_query, st.session_state.sutra_api_key)
+                st.info(f"Translated query: '{english_query}'")
+        else:
+            english_query = search_query
+        
         # Show loading message
-        with st.spinner(f"Fetching jobs for '{search_query}'..."):
+        with st.spinner(f"Fetching jobs for '{english_query}'..."):
             # Fetch jobs data
             jobs = fetch_jobs(
-                query=search_query,
+                query=english_query,
                 location=location if location != "Worldwide" else None # Use selected location, or None for worldwide
             )
             
