@@ -242,14 +242,16 @@ def translate_query_to_english(query, api_key):
         model = get_base_chat_model(api_key)
         
         system_message = """
-        You are a professional translator. Translate the following search query to English.
+        You are a professional translator specializing in job search queries. Translate the following search query to English.
         
         Translation Rules:
         1. Keep the translation concise and clear
-        2. Maintain the search intent
+        2. Maintain the search intent and job-related terminology
         3. Preserve any proper nouns (names, places)
         4. Keep any numbers, dates, and measurements
         5. Ensure the translation is natural and search-friendly
+        6. For technical terms (like "Full Stack", "Developer", etc.), use standard English terminology
+        7. If the query is already in English, return it as is
         
         Return ONLY the translated query without any explanations or additional text.
         """
@@ -261,10 +263,15 @@ def translate_query_to_english(query, api_key):
         response = model.invoke(messages)
         translated_query = response.content.strip()
         
+        # Log the translation for debugging
+        st.write(f"Debug - Original query: {query}")
+        st.write(f"Debug - Translated query: {translated_query}")
+        
         return translated_query
         
     except Exception as e:
-        st.warning(f"Error translating query: {str(e)}. Using original query.")
+        st.error(f"Error translating query: {str(e)}")
+        st.warning("Using original query as fallback.")
         return query
 
 # Initialize session state variables
@@ -350,7 +357,8 @@ if search_button or (not st.session_state.jobs_data and st.session_state.serp_ap
         if selected_language != "English" and st.session_state.sutra_api_key:
             with st.spinner("Translating search query to English..."):
                 english_query = translate_query_to_english(search_query, st.session_state.sutra_api_key)
-                st.info(f"Translated query: '{english_query}'")
+                if english_query != search_query:  # Only show if translation actually happened
+                    st.info(f"Translated query: '{english_query}'")
         else:
             english_query = search_query
         
