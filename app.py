@@ -4,7 +4,19 @@ import json
 from langchain_openai import ChatOpenAI
 from langchain.schema import HumanMessage
 from langchain.callbacks.base import BaseCallbackHandler
-from serpapi import GoogleSearch
+
+# Try importing SerpAPI, show error if not installed
+try:
+    from serpapi import GoogleSearch
+except ImportError:
+    st.error("""
+    The required package 'google-search-results' is not installed. 
+    Please install it using:
+    ```
+    pip install google-search-results
+    ```
+    """)
+    st.stop()
 
 # Page configuration
 st.set_page_config(
