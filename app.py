@@ -295,15 +295,7 @@ with st.sidebar:
     
     # API Key sections
     st.markdown("### API Keys")
-    st.markdown("**SerpAPI**")
-    serp_api_key = st.text_input("Enter your SerpAPI Key:", 
-                                value=st.session_state.serp_api_key,
-                                type="password",
-                                label_visibility="collapsed")
-    if serp_api_key:
-        st.session_state.serp_api_key = serp_api_key
-    
-    st.markdown("**Sutra API**")
+    st.markdown("**SUTRA API**")
     st.markdown("Get your free API key from [SUTRA API](https://www.two.ai/sutra/api)")
     sutra_api_key = st.text_input("Enter your Sutra API Key:", 
                                  value=st.session_state.sutra_api_key,
@@ -311,6 +303,15 @@ with st.sidebar:
                                  label_visibility="collapsed")
     if sutra_api_key:
         st.session_state.sutra_api_key = sutra_api_key
+    
+    st.markdown("**SerpAPI**")
+    st.markdown("Get your API key from [SerpAPI](https://serpapi.com/users/sign_in)")
+    serp_api_key = st.text_input("Enter your SerpAPI Key:", 
+                                value=st.session_state.serp_api_key,
+                                type="password",
+                                label_visibility="collapsed")
+    if serp_api_key:
+        st.session_state.serp_api_key = serp_api_key
     
     location = st.selectbox("Location:", 
                            ["India", "Mexico", "Japan", "Germany", "France", "Brazil", "Indonesia"])
