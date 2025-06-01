@@ -336,7 +336,7 @@ with st.sidebar:
 
 # Main content area
 st.markdown(
-    f'<h1><img src="https://framerusercontent.com/images/9vH8BcjXKRcC5OrSfkohhSyDgX0.png" width="60" style="vertical-align: middle;"/> Multilingual Job Search<img src="https://data.textstudio.com/output/sample/animated/0/9/3/5/job-3-5390.gif" width="90" height="90" style="vertical-align: middle;"/></h1>',
+    f'<h1><img src="https://framerusercontent.com/images/9vH8BcjXKRcC5OrSfkohhSyDgX0.png" width="60" style="vertical-align: middle;"/> Multilingual Job Search<img src="https://cdn-icons-png.flaticon.com/512/2936/2936677.png" width="90" height="90" style="vertical-align: middle;"/></h1>',
     unsafe_allow_html=True
 )
 
