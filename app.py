@@ -336,7 +336,7 @@ with st.sidebar:
 
 # Main content area
 st.markdown(
-    f'<h1><img src="https://framerusercontent.com/images/9vH8BcjXKRcC5OrSfkohhSyDgX0.png" width="60" style="vertical-align: middle;"/> Multilingual Job Search<img src="https://imserv.com/wp-content/uploads/2022/01/Flexible-Working-Icon.gif" width="60" height="60" style="vertical-align: middle;"/></h1>',
+    f'<h1><img src="https://framerusercontent.com/images/9vH8BcjXKRcC5OrSfkohhSyDgX0.png" width="60" style="vertical-align: middle;"/> Multilingual Job Search<img src="https://imserv.com/wp-content/uploads/2022/01/Flexible-Working-Icon.gif" width="73" height="73" style="vertical-align: middle;"/></h1>',
     unsafe_allow_html=True
 )
 
